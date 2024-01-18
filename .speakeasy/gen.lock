@@ -4,9 +4,12 @@ management:
   docChecksum: 4496f20e2f98e5932412c3bdb5614bda
   docVersion: 1.0.0
   speakeasyVersion: internal
-  generationVersion: 2.234.3
+  generationVersion: 2.235.3
   releaseVersion: 0.3.0
   configChecksum: e42076701edb08bc1dac7a6c895503c5
+  repoURL: https://github.com/epilot-dev/terraform-provider-epilot-order.git
+  repoSubDirectory: .
+  published: true
 features:
   terraform:
     additionalProperties: 0.1.2
