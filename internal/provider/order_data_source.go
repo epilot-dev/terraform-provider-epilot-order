@@ -338,22 +338,19 @@ func (r *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"href": schema.StringAttribute{
-						Computed:    true,
-						Description: `Default: null`,
+						Computed: true,
 					},
 					"title": schema.StringAttribute{
-						Computed:    true,
-						Description: `Default: "manual"`,
+						Computed: true,
 					},
 				},
 			},
 			"source_type": schema.StringAttribute{
-				Computed:    true,
-				Description: `Default: "manual"`,
+				Computed: true,
 			},
 			"status": schema.StringAttribute{
 				Computed:    true,
-				Description: `must be one of ["draft", "quote", "placed", "complete", "cancelled", "open_for_acceptance"]; Default: "draft"`,
+				Description: `must be one of ["draft", "quote", "placed", "complete", "cancelled", "open_for_acceptance"]`,
 			},
 			"totals_detail": schema.SingleNestedAttribute{
 				Computed: true,
@@ -385,7 +382,7 @@ func (r *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 										},
 										"type": schema.StringAttribute{
 											Computed:    true,
-											Description: `One of ` + "`" + `one_time` + "`" + ` or ` + "`" + `recurring` + "`" + ` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. must be one of ["one_time", "recurring"]; Default: "one_time"`,
+											Description: `One of ` + "`" + `one_time` + "`" + ` or ` + "`" + `recurring` + "`" + ` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. must be one of ["one_time", "recurring"]`,
 										},
 									},
 								},

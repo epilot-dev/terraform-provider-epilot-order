@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -477,6 +478,7 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 					"title": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     stringdefault.StaticString("manual"),
 						Description: `Default: "manual"`,
 					},
 				},
@@ -484,11 +486,13 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			"source_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
+				Default:     stringdefault.StaticString("manual"),
 				Description: `Default: "manual"`,
 			},
 			"status": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
+				Default:     stringdefault.StaticString("draft"),
 				Description: `must be one of ["draft", "quote", "placed", "complete", "cancelled", "open_for_acceptance"]; Default: "draft"`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -541,6 +545,7 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 										"type": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
+											Default:     stringdefault.StaticString("one_time"),
 											Description: `One of ` + "`" + `one_time` + "`" + ` or ` + "`" + `recurring` + "`" + ` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. must be one of ["one_time", "recurring"]; Default: "one_time"`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
