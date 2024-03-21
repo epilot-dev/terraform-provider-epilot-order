@@ -5,8 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	tfTypes "github.com/epilot-dev/terraform-provider-epilot-order/internal/provider/types"
 	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk"
-	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/pkg/models/operations"
+	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/models/operations"
 	"github.com/epilot-dev/terraform-provider-epilot-order/internal/validators"
 	speakeasy_stringvalidators "github.com/epilot-dev/terraform-provider-epilot-order/internal/validators/stringvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -34,29 +35,29 @@ type OrderResource struct {
 
 // OrderResourceModel describes the resource data model.
 type OrderResourceModel struct {
-	ACL                 BaseEntityACL            `tfsdk:"acl"`
-	CreatedAt           types.String             `tfsdk:"created_at"`
-	ID                  types.String             `tfsdk:"id"`
-	Org                 types.String             `tfsdk:"org"`
-	Owners              []BaseEntityOwner        `tfsdk:"owners"`
-	Schema              types.String             `tfsdk:"schema"`
-	Tags                []types.String           `tfsdk:"tags"`
-	Title               types.String             `tfsdk:"title"`
-	UpdatedAt           types.String             `tfsdk:"updated_at"`
-	AdditionalAddresses []BaseAddress            `tfsdk:"additional_addresses"`
-	BillingAddress      []BaseAddress            `tfsdk:"billing_address"`
-	BillingContact      *BaseRelation            `tfsdk:"billing_contact"`
-	Customer            *BaseRelation            `tfsdk:"customer"`
-	DeliveryAddress     []BaseAddress            `tfsdk:"delivery_address"`
-	ExpiresAt           types.String             `tfsdk:"expires_at"`
-	MappedEntities      *BaseRelation            `tfsdk:"mapped_entities"`
-	OrderNumber         types.String             `tfsdk:"order_number"`
-	Prices              *BaseRelation            `tfsdk:"prices"`
-	Products            *BaseRelation            `tfsdk:"products"`
-	Source              *OrderCreateSource       `tfsdk:"source"`
-	SourceType          types.String             `tfsdk:"source_type"`
-	Status              types.String             `tfsdk:"status"`
-	TotalsDetail        *OrderCreateTotalsDetail `tfsdk:"totals_detail"`
+	ACL                 tfTypes.BaseEntityACL            `tfsdk:"acl"`
+	CreatedAt           types.String                     `tfsdk:"created_at"`
+	ID                  types.String                     `tfsdk:"id"`
+	Org                 types.String                     `tfsdk:"org"`
+	Owners              []tfTypes.BaseEntityOwner        `tfsdk:"owners"`
+	Schema              types.String                     `tfsdk:"schema"`
+	Tags                []types.String                   `tfsdk:"tags"`
+	Title               types.String                     `tfsdk:"title"`
+	UpdatedAt           types.String                     `tfsdk:"updated_at"`
+	AdditionalAddresses []tfTypes.BaseAddress            `tfsdk:"additional_addresses"`
+	BillingAddress      []tfTypes.BaseAddress            `tfsdk:"billing_address"`
+	BillingContact      *tfTypes.BaseRelation            `tfsdk:"billing_contact"`
+	Customer            *tfTypes.BaseRelation            `tfsdk:"customer"`
+	DeliveryAddress     []tfTypes.BaseAddress            `tfsdk:"delivery_address"`
+	ExpiresAt           types.String                     `tfsdk:"expires_at"`
+	MappedEntities      *tfTypes.BaseRelation            `tfsdk:"mapped_entities"`
+	OrderNumber         types.String                     `tfsdk:"order_number"`
+	Prices              *tfTypes.BaseRelation            `tfsdk:"prices"`
+	Products            *tfTypes.BaseRelation            `tfsdk:"products"`
+	Source              *tfTypes.OrderCreateSource       `tfsdk:"source"`
+	SourceType          types.String                     `tfsdk:"source_type"`
+	Status              types.String                     `tfsdk:"status"`
+	TotalsDetail        *tfTypes.OrderCreateTotalsDetail `tfsdk:"totals_detail"`
 }
 
 func (r *OrderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

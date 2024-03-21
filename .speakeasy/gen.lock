@@ -3,10 +3,10 @@ id: e4282a6d-ee5d-4dff-a39c-7c48bfc05230
 management:
   docChecksum: 4496f20e2f98e5932412c3bdb5614bda
   docVersion: 1.0.0
-  speakeasyVersion: 1.207.1
-  generationVersion: 2.280.6
-  releaseVersion: 0.5.1
-  configChecksum: 272c2de1d64bfbf5aa4b77a7d1326acd
+  speakeasyVersion: 1.215.1
+  generationVersion: 2.286.4
+  releaseVersion: 0.6.0
+  configChecksum: f32c60ee1f645525af75a0f5e8c4689d
   repoURL: https://github.com/epilot-dev/terraform-provider-epilot-order.git
   repoSubDirectory: .
   published: true
@@ -14,12 +14,47 @@ features:
   terraform:
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.10.3
-    globalSecurity: 2.81.5
+    core: 3.11.1
+    globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
 generatedFiles:
   - internal/sdk/order.go
   - internal/sdk/sdk.go
+  - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/types/bigint.go
+  - internal/sdk/types/date.go
+  - internal/sdk/types/datetime.go
+  - internal/sdk/types/decimal.go
+  - internal/sdk/types/pointers.go
+  - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/form.go
+  - internal/sdk/internal/utils/headers.go
+  - internal/sdk/internal/utils/json.go
+  - internal/sdk/internal/utils/pathparams.go
+  - internal/sdk/internal/utils/queryparams.go
+  - internal/sdk/internal/utils/requestbody.go
+  - internal/sdk/internal/utils/retries.go
+  - internal/sdk/internal/utils/security.go
+  - internal/sdk/internal/utils/utils.go
+  - internal/sdk/models/operations/createorder.go
+  - internal/sdk/models/operations/deleteorder.go
+  - internal/sdk/models/operations/getorder.go
+  - internal/sdk/models/operations/patchorder.go
+  - internal/sdk/models/operations/updateorder.go
+  - internal/sdk/models/shared/servererror.go
+  - internal/sdk/models/shared/order.go
+  - internal/sdk/models/shared/baserelation.go
+  - internal/sdk/models/shared/baseaddress.go
+  - internal/sdk/models/shared/baseentityowner.go
+  - internal/sdk/models/shared/baseentityacl.go
+  - internal/sdk/models/shared/clienterror.go
+  - internal/sdk/models/shared/ordercreate.go
+  - internal/sdk/models/shared/orderpatch.go
+  - internal/sdk/models/shared/security.go
+  - internal/sdk/.gitignore
+  - internal/sdk/.gitattributes
+  - internal/sdk/internal/hooks/registration.go
+  - internal/sdk/internal/hooks/hooks.go
   - examples/README.md
   - go.mod
   - go.sum
@@ -48,22 +83,6 @@ generatedFiles:
   - internal/provider/reflect/slice.go
   - internal/provider/reflect/struct.go
   - internal/provider/utils.go
-  - internal/sdk/pkg/models/sdkerrors/sdkerror.go
-  - internal/sdk/pkg/types/bigint.go
-  - internal/sdk/pkg/types/date.go
-  - internal/sdk/pkg/types/datetime.go
-  - internal/sdk/pkg/types/decimal.go
-  - internal/sdk/pkg/types/pointers.go
-  - internal/sdk/pkg/utils/contenttype.go
-  - internal/sdk/pkg/utils/form.go
-  - internal/sdk/pkg/utils/headers.go
-  - internal/sdk/pkg/utils/json.go
-  - internal/sdk/pkg/utils/pathparams.go
-  - internal/sdk/pkg/utils/queryparams.go
-  - internal/sdk/pkg/utils/requestbody.go
-  - internal/sdk/pkg/utils/retries.go
-  - internal/sdk/pkg/utils/security.go
-  - internal/sdk/pkg/utils/utils.go
   - internal/validators/DateValidator.go
   - internal/validators/ExactlyOneChild.go
   - internal/validators/JSONParseValidator.go
@@ -80,32 +99,17 @@ generatedFiles:
   - main.go
   - terraform-registry-manifest.json
   - tools/tools.go
-  - internal/sdk/pkg/models/operations/createorder.go
-  - internal/sdk/pkg/models/operations/deleteorder.go
-  - internal/sdk/pkg/models/operations/getorder.go
-  - internal/sdk/pkg/models/operations/patchorder.go
-  - internal/sdk/pkg/models/operations/updateorder.go
-  - internal/sdk/pkg/models/shared/servererror.go
-  - internal/sdk/pkg/models/shared/order.go
-  - internal/sdk/pkg/models/shared/baserelation.go
-  - internal/sdk/pkg/models/shared/baseaddress.go
-  - internal/sdk/pkg/models/shared/baseentityowner.go
-  - internal/sdk/pkg/models/shared/baseentityacl.go
-  - internal/sdk/pkg/models/shared/clienterror.go
-  - internal/sdk/pkg/models/shared/ordercreate.go
-  - internal/sdk/pkg/models/shared/orderpatch.go
-  - internal/sdk/pkg/models/shared/security.go
-  - internal/provider/type_base_entity_acl.go
-  - internal/provider/type_base_entity_owner.go
-  - internal/provider/type_base_address.go
-  - internal/provider/type_dollar_relation.go
-  - internal/provider/type_base_relation.go
-  - internal/provider/type_order_create_source.go
-  - internal/provider/type_recurrences.go
-  - internal/provider/type_tax.go
-  - internal/provider/type_taxes.go
-  - internal/provider/type_order_create_breakdown.go
-  - internal/provider/type_order_create_totals_detail.go
+  - internal/provider/types/base_entity_acl.go
+  - internal/provider/types/base_entity_owner.go
+  - internal/provider/types/base_address.go
+  - internal/provider/types/dollar_relation.go
+  - internal/provider/types/base_relation.go
+  - internal/provider/types/order_create_source.go
+  - internal/provider/types/recurrences.go
+  - internal/provider/types/tax.go
+  - internal/provider/types/taxes.go
+  - internal/provider/types/order_create_breakdown.go
+  - internal/provider/types/order_create_totals_detail.go
   - USAGE.md
   - internal/provider/provider.go
   - examples/provider/provider.tf

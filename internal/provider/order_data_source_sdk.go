@@ -4,7 +4,8 @@ package provider
 
 import (
 	"encoding/json"
-	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/epilot-dev/terraform-provider-epilot-order/internal/provider/types"
+	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"math/big"
 	"time"
@@ -36,7 +37,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			r.Owners = r.Owners[:len(resp.Owners)]
 		}
 		for ownersCount, ownersItem := range resp.Owners {
-			var owners1 BaseEntityOwner
+			var owners1 tfTypes.BaseEntityOwner
 			owners1.OrgID = types.StringValue(ownersItem.OrgID)
 			owners1.UserID = types.StringPointerValue(ownersItem.UserID)
 			if ownersCount+1 > len(r.Owners) {
@@ -57,7 +58,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			r.AdditionalAddresses = r.AdditionalAddresses[:len(resp.AdditionalAddresses)]
 		}
 		for additionalAddressesCount, additionalAddressesItem := range resp.AdditionalAddresses {
-			var additionalAddresses1 BaseAddress
+			var additionalAddresses1 tfTypes.BaseAddress
 			additionalAddresses1.ID = types.StringPointerValue(additionalAddressesItem.ID)
 			additionalAddresses1.Tags = nil
 			for _, v := range additionalAddressesItem.Tags {
@@ -90,7 +91,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			r.BillingAddress = r.BillingAddress[:len(resp.BillingAddress)]
 		}
 		for billingAddressCount, billingAddressItem := range resp.BillingAddress {
-			var billingAddress1 BaseAddress
+			var billingAddress1 tfTypes.BaseAddress
 			billingAddress1.ID = types.StringPointerValue(billingAddressItem.ID)
 			billingAddress1.Tags = nil
 			for _, v := range billingAddressItem.Tags {
@@ -122,12 +123,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.BillingContact == nil {
 			r.BillingContact = nil
 		} else {
-			r.BillingContact = &BaseRelation{}
+			r.BillingContact = &tfTypes.BaseRelation{}
 			if len(r.BillingContact.DollarRelation) > len(resp.BillingContact.DollarRelation) {
 				r.BillingContact.DollarRelation = r.BillingContact.DollarRelation[:len(resp.BillingContact.DollarRelation)]
 			}
 			for dollarRelationCount, dollarRelationItem := range resp.BillingContact.DollarRelation {
-				var dollarRelation1 DollarRelation
+				var dollarRelation1 tfTypes.DollarRelation
 				dollarRelation1.Tags = nil
 				for _, v := range dollarRelationItem.Tags {
 					dollarRelation1.Tags = append(dollarRelation1.Tags, types.StringValue(v))
@@ -144,12 +145,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.Customer == nil {
 			r.Customer = nil
 		} else {
-			r.Customer = &BaseRelation{}
+			r.Customer = &tfTypes.BaseRelation{}
 			if len(r.Customer.DollarRelation) > len(resp.Customer.DollarRelation) {
 				r.Customer.DollarRelation = r.Customer.DollarRelation[:len(resp.Customer.DollarRelation)]
 			}
 			for dollarRelationCount1, dollarRelationItem1 := range resp.Customer.DollarRelation {
-				var dollarRelation3 DollarRelation
+				var dollarRelation3 tfTypes.DollarRelation
 				dollarRelation3.Tags = nil
 				for _, v := range dollarRelationItem1.Tags {
 					dollarRelation3.Tags = append(dollarRelation3.Tags, types.StringValue(v))
@@ -167,7 +168,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			r.DeliveryAddress = r.DeliveryAddress[:len(resp.DeliveryAddress)]
 		}
 		for deliveryAddressCount, deliveryAddressItem := range resp.DeliveryAddress {
-			var deliveryAddress1 BaseAddress
+			var deliveryAddress1 tfTypes.BaseAddress
 			deliveryAddress1.ID = types.StringPointerValue(deliveryAddressItem.ID)
 			deliveryAddress1.Tags = nil
 			for _, v := range deliveryAddressItem.Tags {
@@ -205,12 +206,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.MappedEntities == nil {
 			r.MappedEntities = nil
 		} else {
-			r.MappedEntities = &BaseRelation{}
+			r.MappedEntities = &tfTypes.BaseRelation{}
 			if len(r.MappedEntities.DollarRelation) > len(resp.MappedEntities.DollarRelation) {
 				r.MappedEntities.DollarRelation = r.MappedEntities.DollarRelation[:len(resp.MappedEntities.DollarRelation)]
 			}
 			for dollarRelationCount2, dollarRelationItem2 := range resp.MappedEntities.DollarRelation {
-				var dollarRelation5 DollarRelation
+				var dollarRelation5 tfTypes.DollarRelation
 				dollarRelation5.Tags = nil
 				for _, v := range dollarRelationItem2.Tags {
 					dollarRelation5.Tags = append(dollarRelation5.Tags, types.StringValue(v))
@@ -228,12 +229,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.Prices == nil {
 			r.Prices = nil
 		} else {
-			r.Prices = &BaseRelation{}
+			r.Prices = &tfTypes.BaseRelation{}
 			if len(r.Prices.DollarRelation) > len(resp.Prices.DollarRelation) {
 				r.Prices.DollarRelation = r.Prices.DollarRelation[:len(resp.Prices.DollarRelation)]
 			}
 			for dollarRelationCount3, dollarRelationItem3 := range resp.Prices.DollarRelation {
-				var dollarRelation7 DollarRelation
+				var dollarRelation7 tfTypes.DollarRelation
 				dollarRelation7.Tags = nil
 				for _, v := range dollarRelationItem3.Tags {
 					dollarRelation7.Tags = append(dollarRelation7.Tags, types.StringValue(v))
@@ -250,12 +251,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.Products == nil {
 			r.Products = nil
 		} else {
-			r.Products = &BaseRelation{}
+			r.Products = &tfTypes.BaseRelation{}
 			if len(r.Products.DollarRelation) > len(resp.Products.DollarRelation) {
 				r.Products.DollarRelation = r.Products.DollarRelation[:len(resp.Products.DollarRelation)]
 			}
 			for dollarRelationCount4, dollarRelationItem4 := range resp.Products.DollarRelation {
-				var dollarRelation9 DollarRelation
+				var dollarRelation9 tfTypes.DollarRelation
 				dollarRelation9.Tags = nil
 				for _, v := range dollarRelationItem4.Tags {
 					dollarRelation9.Tags = append(dollarRelation9.Tags, types.StringValue(v))
@@ -272,7 +273,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.Source == nil {
 			r.Source = nil
 		} else {
-			r.Source = &OrderCreateSource{}
+			r.Source = &tfTypes.OrderCreateSource{}
 			r.Source.Href = types.StringPointerValue(resp.Source.Href)
 			r.Source.Title = types.StringPointerValue(resp.Source.Title)
 		}
@@ -285,7 +286,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		if resp.TotalsDetail == nil {
 			r.TotalsDetail = nil
 		} else {
-			r.TotalsDetail = &OrderCreateTotalsDetail{}
+			r.TotalsDetail = &tfTypes.OrderCreateTotalsDetail{}
 			if resp.TotalsDetail.AmountTax != nil {
 				r.TotalsDetail.AmountTax = types.NumberValue(big.NewFloat(float64(*resp.TotalsDetail.AmountTax)))
 			} else {
@@ -294,12 +295,12 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			if resp.TotalsDetail.Breakdown == nil {
 				r.TotalsDetail.Breakdown = nil
 			} else {
-				r.TotalsDetail.Breakdown = &OrderCreateBreakdown{}
+				r.TotalsDetail.Breakdown = &tfTypes.OrderCreateBreakdown{}
 				if len(r.TotalsDetail.Breakdown.Recurrences) > len(resp.TotalsDetail.Breakdown.Recurrences) {
 					r.TotalsDetail.Breakdown.Recurrences = r.TotalsDetail.Breakdown.Recurrences[:len(resp.TotalsDetail.Breakdown.Recurrences)]
 				}
 				for recurrencesCount, recurrencesItem := range resp.TotalsDetail.Breakdown.Recurrences {
-					var recurrences1 Recurrences
+					var recurrences1 tfTypes.Recurrences
 					if recurrencesItem.AmountSubtotal != nil {
 						recurrences1.AmountSubtotal = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountSubtotal)))
 					} else {
@@ -337,14 +338,14 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 					r.TotalsDetail.Breakdown.Taxes = r.TotalsDetail.Breakdown.Taxes[:len(resp.TotalsDetail.Breakdown.Taxes)]
 				}
 				for taxesCount, taxesItem := range resp.TotalsDetail.Breakdown.Taxes {
-					var taxes1 Taxes
+					var taxes1 tfTypes.Taxes
 					if taxesItem.Amount != nil {
 						taxes1.Amount = types.NumberValue(big.NewFloat(float64(*taxesItem.Amount)))
 					} else {
 						taxes1.Amount = types.NumberNull()
 					}
 					for taxCount, taxItem := range taxesItem.Tax {
-						var tax1 Tax
+						var tax1 tfTypes.Tax
 						tax1.ID = types.StringPointerValue(taxItem.ID)
 						tax1.Rate = types.StringPointerValue(taxItem.Rate)
 						if taxItem.Type != nil {
