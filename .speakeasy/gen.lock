@@ -3,10 +3,10 @@ id: e4282a6d-ee5d-4dff-a39c-7c48bfc05230
 management:
   docChecksum: 4496f20e2f98e5932412c3bdb5614bda
   docVersion: 1.0.0
-  speakeasyVersion: 1.215.1
-  generationVersion: 2.286.4
-  releaseVersion: 0.6.0
-  configChecksum: f32c60ee1f645525af75a0f5e8c4689d
+  speakeasyVersion: 1.219.2
+  generationVersion: 2.286.7
+  releaseVersion: 0.6.1
+  configChecksum: 873228430fdc5b3a6299ef1ab3272082
   repoURL: https://github.com/epilot-dev/terraform-provider-epilot-order.git
   repoSubDirectory: .
   published: true
@@ -14,7 +14,7 @@ features:
   terraform:
     additionalProperties: 0.1.2
     constsAndDefaults: 0.1.4
-    core: 3.11.1
+    core: 3.11.5
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
 generatedFiles:

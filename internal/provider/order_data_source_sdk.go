@@ -19,15 +19,15 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			additionalPropertiesResult, _ := json.Marshal(resp.ACL.AdditionalProperties)
 			r.ACL.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
 		}
-		r.ACL.Delete = nil
+		r.ACL.Delete = []types.String{}
 		for _, v := range resp.ACL.Delete {
 			r.ACL.Delete = append(r.ACL.Delete, types.StringValue(v))
 		}
-		r.ACL.Edit = nil
+		r.ACL.Edit = []types.String{}
 		for _, v := range resp.ACL.Edit {
 			r.ACL.Edit = append(r.ACL.Edit, types.StringValue(v))
 		}
-		r.ACL.View = nil
+		r.ACL.View = []types.String{}
 		for _, v := range resp.ACL.View {
 			r.ACL.View = append(r.ACL.View, types.StringValue(v))
 		}
@@ -48,7 +48,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 		}
 		r.Schema = types.StringValue(resp.Schema)
-		r.Tags = nil
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
@@ -60,7 +60,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		for additionalAddressesCount, additionalAddressesItem := range resp.AdditionalAddresses {
 			var additionalAddresses1 tfTypes.BaseAddress
 			additionalAddresses1.ID = types.StringPointerValue(additionalAddressesItem.ID)
-			additionalAddresses1.Tags = nil
+			additionalAddresses1.Tags = []types.String{}
 			for _, v := range additionalAddressesItem.Tags {
 				additionalAddresses1.Tags = append(additionalAddresses1.Tags, types.StringValue(v))
 			}
@@ -93,7 +93,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		for billingAddressCount, billingAddressItem := range resp.BillingAddress {
 			var billingAddress1 tfTypes.BaseAddress
 			billingAddress1.ID = types.StringPointerValue(billingAddressItem.ID)
-			billingAddress1.Tags = nil
+			billingAddress1.Tags = []types.String{}
 			for _, v := range billingAddressItem.Tags {
 				billingAddress1.Tags = append(billingAddress1.Tags, types.StringValue(v))
 			}
@@ -129,7 +129,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 			for dollarRelationCount, dollarRelationItem := range resp.BillingContact.DollarRelation {
 				var dollarRelation1 tfTypes.DollarRelation
-				dollarRelation1.Tags = nil
+				dollarRelation1.Tags = []types.String{}
 				for _, v := range dollarRelationItem.Tags {
 					dollarRelation1.Tags = append(dollarRelation1.Tags, types.StringValue(v))
 				}
@@ -151,7 +151,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 			for dollarRelationCount1, dollarRelationItem1 := range resp.Customer.DollarRelation {
 				var dollarRelation3 tfTypes.DollarRelation
-				dollarRelation3.Tags = nil
+				dollarRelation3.Tags = []types.String{}
 				for _, v := range dollarRelationItem1.Tags {
 					dollarRelation3.Tags = append(dollarRelation3.Tags, types.StringValue(v))
 				}
@@ -170,7 +170,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 		for deliveryAddressCount, deliveryAddressItem := range resp.DeliveryAddress {
 			var deliveryAddress1 tfTypes.BaseAddress
 			deliveryAddress1.ID = types.StringPointerValue(deliveryAddressItem.ID)
-			deliveryAddress1.Tags = nil
+			deliveryAddress1.Tags = []types.String{}
 			for _, v := range deliveryAddressItem.Tags {
 				deliveryAddress1.Tags = append(deliveryAddress1.Tags, types.StringValue(v))
 			}
@@ -212,7 +212,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 			for dollarRelationCount2, dollarRelationItem2 := range resp.MappedEntities.DollarRelation {
 				var dollarRelation5 tfTypes.DollarRelation
-				dollarRelation5.Tags = nil
+				dollarRelation5.Tags = []types.String{}
 				for _, v := range dollarRelationItem2.Tags {
 					dollarRelation5.Tags = append(dollarRelation5.Tags, types.StringValue(v))
 				}
@@ -235,7 +235,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 			for dollarRelationCount3, dollarRelationItem3 := range resp.Prices.DollarRelation {
 				var dollarRelation7 tfTypes.DollarRelation
-				dollarRelation7.Tags = nil
+				dollarRelation7.Tags = []types.String{}
 				for _, v := range dollarRelationItem3.Tags {
 					dollarRelation7.Tags = append(dollarRelation7.Tags, types.StringValue(v))
 				}
@@ -257,7 +257,7 @@ func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 			}
 			for dollarRelationCount4, dollarRelationItem4 := range resp.Products.DollarRelation {
 				var dollarRelation9 tfTypes.DollarRelation
-				dollarRelation9.Tags = nil
+				dollarRelation9.Tags = []types.String{}
 				for _, v := range dollarRelationItem4.Tags {
 					dollarRelation9.Tags = append(dollarRelation9.Tags, types.StringValue(v))
 				}
