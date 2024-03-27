@@ -5,8 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	tfTypes "github.com/epilot-dev/terraform-provider-epilot-order/internal/provider/types"
 	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk"
-	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/pkg/models/operations"
+	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -28,30 +29,30 @@ type OrderDataSource struct {
 
 // OrderDataSourceModel describes the data model.
 type OrderDataSourceModel struct {
-	ACL                 BaseEntityACL            `tfsdk:"acl"`
-	CreatedAt           types.String             `tfsdk:"created_at"`
-	Org                 types.String             `tfsdk:"org"`
-	Owners              []BaseEntityOwner        `tfsdk:"owners"`
-	Schema              types.String             `tfsdk:"schema"`
-	Tags                []types.String           `tfsdk:"tags"`
-	Title               types.String             `tfsdk:"title"`
-	UpdatedAt           types.String             `tfsdk:"updated_at"`
-	AdditionalAddresses []BaseAddress            `tfsdk:"additional_addresses"`
-	BillingAddress      []BaseAddress            `tfsdk:"billing_address"`
-	BillingContact      *BaseRelation            `tfsdk:"billing_contact"`
-	Customer            *BaseRelation            `tfsdk:"customer"`
-	DeliveryAddress     []BaseAddress            `tfsdk:"delivery_address"`
-	ExpiresAt           types.String             `tfsdk:"expires_at"`
-	Hydrate             types.Bool               `tfsdk:"hydrate"`
-	ID                  types.String             `tfsdk:"id"`
-	MappedEntities      *BaseRelation            `tfsdk:"mapped_entities"`
-	OrderNumber         types.String             `tfsdk:"order_number"`
-	Prices              *BaseRelation            `tfsdk:"prices"`
-	Products            *BaseRelation            `tfsdk:"products"`
-	Source              *OrderCreateSource       `tfsdk:"source"`
-	SourceType          types.String             `tfsdk:"source_type"`
-	Status              types.String             `tfsdk:"status"`
-	TotalsDetail        *OrderCreateTotalsDetail `tfsdk:"totals_detail"`
+	ACL                 tfTypes.BaseEntityACL            `tfsdk:"acl"`
+	CreatedAt           types.String                     `tfsdk:"created_at"`
+	Org                 types.String                     `tfsdk:"org"`
+	Owners              []tfTypes.BaseEntityOwner        `tfsdk:"owners"`
+	Schema              types.String                     `tfsdk:"schema"`
+	Tags                []types.String                   `tfsdk:"tags"`
+	Title               types.String                     `tfsdk:"title"`
+	UpdatedAt           types.String                     `tfsdk:"updated_at"`
+	AdditionalAddresses []tfTypes.BaseAddress            `tfsdk:"additional_addresses"`
+	BillingAddress      []tfTypes.BaseAddress            `tfsdk:"billing_address"`
+	BillingContact      *tfTypes.BaseRelation            `tfsdk:"billing_contact"`
+	Customer            *tfTypes.BaseRelation            `tfsdk:"customer"`
+	DeliveryAddress     []tfTypes.BaseAddress            `tfsdk:"delivery_address"`
+	ExpiresAt           types.String                     `tfsdk:"expires_at"`
+	Hydrate             types.Bool                       `tfsdk:"hydrate"`
+	ID                  types.String                     `tfsdk:"id"`
+	MappedEntities      *tfTypes.BaseRelation            `tfsdk:"mapped_entities"`
+	OrderNumber         types.String                     `tfsdk:"order_number"`
+	Prices              *tfTypes.BaseRelation            `tfsdk:"prices"`
+	Products            *tfTypes.BaseRelation            `tfsdk:"products"`
+	Source              *tfTypes.OrderCreateSource       `tfsdk:"source"`
+	SourceType          types.String                     `tfsdk:"source_type"`
+	Status              types.String                     `tfsdk:"status"`
+	TotalsDetail        *tfTypes.OrderCreateTotalsDetail `tfsdk:"totals_detail"`
 }
 
 // Metadata returns the data source type name.
@@ -338,22 +339,19 @@ func (r *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"href": schema.StringAttribute{
-						Computed:    true,
-						Description: `Default: null`,
+						Computed: true,
 					},
 					"title": schema.StringAttribute{
-						Computed:    true,
-						Description: `Default: "manual"`,
+						Computed: true,
 					},
 				},
 			},
 			"source_type": schema.StringAttribute{
-				Computed:    true,
-				Description: `Default: "manual"`,
+				Computed: true,
 			},
 			"status": schema.StringAttribute{
 				Computed:    true,
-				Description: `must be one of ["draft", "quote", "placed", "complete", "cancelled", "open_for_acceptance"]; Default: "draft"`,
+				Description: `must be one of ["draft", "quote", "placed", "complete", "cancelled", "open_for_acceptance"]`,
 			},
 			"totals_detail": schema.SingleNestedAttribute{
 				Computed: true,
@@ -385,7 +383,7 @@ func (r *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 										},
 										"type": schema.StringAttribute{
 											Computed:    true,
-											Description: `One of ` + "`" + `one_time` + "`" + ` or ` + "`" + `recurring` + "`" + ` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. must be one of ["one_time", "recurring"]; Default: "one_time"`,
+											Description: `One of ` + "`" + `one_time` + "`" + ` or ` + "`" + `recurring` + "`" + ` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. must be one of ["one_time", "recurring"]`,
 										},
 									},
 								},

@@ -4,366 +4,369 @@ package provider
 
 import (
 	"encoding/json"
-	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/epilot-dev/terraform-provider-epilot-order/internal/provider/types"
+	"github.com/epilot-dev/terraform-provider-epilot-order/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"math/big"
 	"time"
 )
 
 func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
-	if resp.ACL.AdditionalProperties == nil {
-		r.ACL.AdditionalProperties = types.StringNull()
-	} else {
-		additionalPropertiesResult, _ := json.Marshal(resp.ACL.AdditionalProperties)
-		r.ACL.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-	}
-	r.ACL.Delete = nil
-	for _, v := range resp.ACL.Delete {
-		r.ACL.Delete = append(r.ACL.Delete, types.StringValue(v))
-	}
-	r.ACL.Edit = nil
-	for _, v := range resp.ACL.Edit {
-		r.ACL.Edit = append(r.ACL.Edit, types.StringValue(v))
-	}
-	r.ACL.View = nil
-	for _, v := range resp.ACL.View {
-		r.ACL.View = append(r.ACL.View, types.StringValue(v))
-	}
-	r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-	r.Org = types.StringValue(resp.Org)
-	if len(r.Owners) > len(resp.Owners) {
-		r.Owners = r.Owners[:len(resp.Owners)]
-	}
-	for ownersCount, ownersItem := range resp.Owners {
-		var owners1 BaseEntityOwner
-		owners1.OrgID = types.StringValue(ownersItem.OrgID)
-		owners1.UserID = types.StringPointerValue(ownersItem.UserID)
-		if ownersCount+1 > len(r.Owners) {
-			r.Owners = append(r.Owners, owners1)
+	if resp != nil {
+		if resp.ACL.AdditionalProperties == nil {
+			r.ACL.AdditionalProperties = types.StringNull()
 		} else {
-			r.Owners[ownersCount].OrgID = owners1.OrgID
-			r.Owners[ownersCount].UserID = owners1.UserID
+			additionalPropertiesResult, _ := json.Marshal(resp.ACL.AdditionalProperties)
+			r.ACL.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
 		}
-	}
-	r.Schema = types.StringValue(resp.Schema)
-	r.Tags = nil
-	for _, v := range resp.Tags {
-		r.Tags = append(r.Tags, types.StringValue(v))
-	}
-	r.Title = types.StringValue(resp.Title)
-	r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	if len(r.AdditionalAddresses) > len(resp.AdditionalAddresses) {
-		r.AdditionalAddresses = r.AdditionalAddresses[:len(resp.AdditionalAddresses)]
-	}
-	for additionalAddressesCount, additionalAddressesItem := range resp.AdditionalAddresses {
-		var additionalAddresses1 BaseAddress
-		additionalAddresses1.ID = types.StringPointerValue(additionalAddressesItem.ID)
-		additionalAddresses1.Tags = nil
-		for _, v := range additionalAddressesItem.Tags {
-			additionalAddresses1.Tags = append(additionalAddresses1.Tags, types.StringValue(v))
+		r.ACL.Delete = []types.String{}
+		for _, v := range resp.ACL.Delete {
+			r.ACL.Delete = append(r.ACL.Delete, types.StringValue(v))
 		}
-		additionalAddresses1.AdditionalInfo = types.StringPointerValue(additionalAddressesItem.AdditionalInfo)
-		additionalAddresses1.City = types.StringPointerValue(additionalAddressesItem.City)
-		if additionalAddressesItem.Country != nil {
-			additionalAddresses1.Country = types.StringValue(string(*additionalAddressesItem.Country))
-		} else {
-			additionalAddresses1.Country = types.StringNull()
+		r.ACL.Edit = []types.String{}
+		for _, v := range resp.ACL.Edit {
+			r.ACL.Edit = append(r.ACL.Edit, types.StringValue(v))
 		}
-		additionalAddresses1.PostalCode = types.StringPointerValue(additionalAddressesItem.PostalCode)
-		additionalAddresses1.Street = types.StringPointerValue(additionalAddressesItem.Street)
-		additionalAddresses1.StreetNumber = types.StringPointerValue(additionalAddressesItem.StreetNumber)
-		if additionalAddressesCount+1 > len(r.AdditionalAddresses) {
-			r.AdditionalAddresses = append(r.AdditionalAddresses, additionalAddresses1)
-		} else {
-			r.AdditionalAddresses[additionalAddressesCount].ID = additionalAddresses1.ID
-			r.AdditionalAddresses[additionalAddressesCount].Tags = additionalAddresses1.Tags
-			r.AdditionalAddresses[additionalAddressesCount].AdditionalInfo = additionalAddresses1.AdditionalInfo
-			r.AdditionalAddresses[additionalAddressesCount].City = additionalAddresses1.City
-			r.AdditionalAddresses[additionalAddressesCount].Country = additionalAddresses1.Country
-			r.AdditionalAddresses[additionalAddressesCount].PostalCode = additionalAddresses1.PostalCode
-			r.AdditionalAddresses[additionalAddressesCount].Street = additionalAddresses1.Street
-			r.AdditionalAddresses[additionalAddressesCount].StreetNumber = additionalAddresses1.StreetNumber
+		r.ACL.View = []types.String{}
+		for _, v := range resp.ACL.View {
+			r.ACL.View = append(r.ACL.View, types.StringValue(v))
 		}
-	}
-	if len(r.BillingAddress) > len(resp.BillingAddress) {
-		r.BillingAddress = r.BillingAddress[:len(resp.BillingAddress)]
-	}
-	for billingAddressCount, billingAddressItem := range resp.BillingAddress {
-		var billingAddress1 BaseAddress
-		billingAddress1.ID = types.StringPointerValue(billingAddressItem.ID)
-		billingAddress1.Tags = nil
-		for _, v := range billingAddressItem.Tags {
-			billingAddress1.Tags = append(billingAddress1.Tags, types.StringValue(v))
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.Org = types.StringValue(resp.Org)
+		if len(r.Owners) > len(resp.Owners) {
+			r.Owners = r.Owners[:len(resp.Owners)]
 		}
-		billingAddress1.AdditionalInfo = types.StringPointerValue(billingAddressItem.AdditionalInfo)
-		billingAddress1.City = types.StringPointerValue(billingAddressItem.City)
-		if billingAddressItem.Country != nil {
-			billingAddress1.Country = types.StringValue(string(*billingAddressItem.Country))
-		} else {
-			billingAddress1.Country = types.StringNull()
-		}
-		billingAddress1.PostalCode = types.StringPointerValue(billingAddressItem.PostalCode)
-		billingAddress1.Street = types.StringPointerValue(billingAddressItem.Street)
-		billingAddress1.StreetNumber = types.StringPointerValue(billingAddressItem.StreetNumber)
-		if billingAddressCount+1 > len(r.BillingAddress) {
-			r.BillingAddress = append(r.BillingAddress, billingAddress1)
-		} else {
-			r.BillingAddress[billingAddressCount].ID = billingAddress1.ID
-			r.BillingAddress[billingAddressCount].Tags = billingAddress1.Tags
-			r.BillingAddress[billingAddressCount].AdditionalInfo = billingAddress1.AdditionalInfo
-			r.BillingAddress[billingAddressCount].City = billingAddress1.City
-			r.BillingAddress[billingAddressCount].Country = billingAddress1.Country
-			r.BillingAddress[billingAddressCount].PostalCode = billingAddress1.PostalCode
-			r.BillingAddress[billingAddressCount].Street = billingAddress1.Street
-			r.BillingAddress[billingAddressCount].StreetNumber = billingAddress1.StreetNumber
-		}
-	}
-	if resp.BillingContact == nil {
-		r.BillingContact = nil
-	} else {
-		r.BillingContact = &BaseRelation{}
-		if len(r.BillingContact.DollarRelation) > len(resp.BillingContact.DollarRelation) {
-			r.BillingContact.DollarRelation = r.BillingContact.DollarRelation[:len(resp.BillingContact.DollarRelation)]
-		}
-		for dollarRelationCount, dollarRelationItem := range resp.BillingContact.DollarRelation {
-			var dollarRelation1 DollarRelation
-			dollarRelation1.Tags = nil
-			for _, v := range dollarRelationItem.Tags {
-				dollarRelation1.Tags = append(dollarRelation1.Tags, types.StringValue(v))
-			}
-			dollarRelation1.EntityID = types.StringPointerValue(dollarRelationItem.EntityID)
-			if dollarRelationCount+1 > len(r.BillingContact.DollarRelation) {
-				r.BillingContact.DollarRelation = append(r.BillingContact.DollarRelation, dollarRelation1)
+		for ownersCount, ownersItem := range resp.Owners {
+			var owners1 tfTypes.BaseEntityOwner
+			owners1.OrgID = types.StringValue(ownersItem.OrgID)
+			owners1.UserID = types.StringPointerValue(ownersItem.UserID)
+			if ownersCount+1 > len(r.Owners) {
+				r.Owners = append(r.Owners, owners1)
 			} else {
-				r.BillingContact.DollarRelation[dollarRelationCount].Tags = dollarRelation1.Tags
-				r.BillingContact.DollarRelation[dollarRelationCount].EntityID = dollarRelation1.EntityID
+				r.Owners[ownersCount].OrgID = owners1.OrgID
+				r.Owners[ownersCount].UserID = owners1.UserID
 			}
 		}
-	}
-	if resp.Customer == nil {
-		r.Customer = nil
-	} else {
-		r.Customer = &BaseRelation{}
-		if len(r.Customer.DollarRelation) > len(resp.Customer.DollarRelation) {
-			r.Customer.DollarRelation = r.Customer.DollarRelation[:len(resp.Customer.DollarRelation)]
+		r.Schema = types.StringValue(resp.Schema)
+		r.Tags = []types.String{}
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
 		}
-		for dollarRelationCount1, dollarRelationItem1 := range resp.Customer.DollarRelation {
-			var dollarRelation3 DollarRelation
-			dollarRelation3.Tags = nil
-			for _, v := range dollarRelationItem1.Tags {
-				dollarRelation3.Tags = append(dollarRelation3.Tags, types.StringValue(v))
+		r.Title = types.StringValue(resp.Title)
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		if len(r.AdditionalAddresses) > len(resp.AdditionalAddresses) {
+			r.AdditionalAddresses = r.AdditionalAddresses[:len(resp.AdditionalAddresses)]
+		}
+		for additionalAddressesCount, additionalAddressesItem := range resp.AdditionalAddresses {
+			var additionalAddresses1 tfTypes.BaseAddress
+			additionalAddresses1.ID = types.StringPointerValue(additionalAddressesItem.ID)
+			additionalAddresses1.Tags = []types.String{}
+			for _, v := range additionalAddressesItem.Tags {
+				additionalAddresses1.Tags = append(additionalAddresses1.Tags, types.StringValue(v))
 			}
-			dollarRelation3.EntityID = types.StringPointerValue(dollarRelationItem1.EntityID)
-			if dollarRelationCount1+1 > len(r.Customer.DollarRelation) {
-				r.Customer.DollarRelation = append(r.Customer.DollarRelation, dollarRelation3)
+			additionalAddresses1.AdditionalInfo = types.StringPointerValue(additionalAddressesItem.AdditionalInfo)
+			additionalAddresses1.City = types.StringPointerValue(additionalAddressesItem.City)
+			if additionalAddressesItem.Country != nil {
+				additionalAddresses1.Country = types.StringValue(string(*additionalAddressesItem.Country))
 			} else {
-				r.Customer.DollarRelation[dollarRelationCount1].Tags = dollarRelation3.Tags
-				r.Customer.DollarRelation[dollarRelationCount1].EntityID = dollarRelation3.EntityID
+				additionalAddresses1.Country = types.StringNull()
 			}
-		}
-	}
-	if len(r.DeliveryAddress) > len(resp.DeliveryAddress) {
-		r.DeliveryAddress = r.DeliveryAddress[:len(resp.DeliveryAddress)]
-	}
-	for deliveryAddressCount, deliveryAddressItem := range resp.DeliveryAddress {
-		var deliveryAddress1 BaseAddress
-		deliveryAddress1.ID = types.StringPointerValue(deliveryAddressItem.ID)
-		deliveryAddress1.Tags = nil
-		for _, v := range deliveryAddressItem.Tags {
-			deliveryAddress1.Tags = append(deliveryAddress1.Tags, types.StringValue(v))
-		}
-		deliveryAddress1.AdditionalInfo = types.StringPointerValue(deliveryAddressItem.AdditionalInfo)
-		deliveryAddress1.City = types.StringPointerValue(deliveryAddressItem.City)
-		if deliveryAddressItem.Country != nil {
-			deliveryAddress1.Country = types.StringValue(string(*deliveryAddressItem.Country))
-		} else {
-			deliveryAddress1.Country = types.StringNull()
-		}
-		deliveryAddress1.PostalCode = types.StringPointerValue(deliveryAddressItem.PostalCode)
-		deliveryAddress1.Street = types.StringPointerValue(deliveryAddressItem.Street)
-		deliveryAddress1.StreetNumber = types.StringPointerValue(deliveryAddressItem.StreetNumber)
-		if deliveryAddressCount+1 > len(r.DeliveryAddress) {
-			r.DeliveryAddress = append(r.DeliveryAddress, deliveryAddress1)
-		} else {
-			r.DeliveryAddress[deliveryAddressCount].ID = deliveryAddress1.ID
-			r.DeliveryAddress[deliveryAddressCount].Tags = deliveryAddress1.Tags
-			r.DeliveryAddress[deliveryAddressCount].AdditionalInfo = deliveryAddress1.AdditionalInfo
-			r.DeliveryAddress[deliveryAddressCount].City = deliveryAddress1.City
-			r.DeliveryAddress[deliveryAddressCount].Country = deliveryAddress1.Country
-			r.DeliveryAddress[deliveryAddressCount].PostalCode = deliveryAddress1.PostalCode
-			r.DeliveryAddress[deliveryAddressCount].Street = deliveryAddress1.Street
-			r.DeliveryAddress[deliveryAddressCount].StreetNumber = deliveryAddress1.StreetNumber
-		}
-	}
-	if resp.ExpiresAt != nil {
-		r.ExpiresAt = types.StringValue(resp.ExpiresAt.Format(time.RFC3339Nano))
-	} else {
-		r.ExpiresAt = types.StringNull()
-	}
-	r.ID = types.StringValue(resp.ID)
-	if resp.MappedEntities == nil {
-		r.MappedEntities = nil
-	} else {
-		r.MappedEntities = &BaseRelation{}
-		if len(r.MappedEntities.DollarRelation) > len(resp.MappedEntities.DollarRelation) {
-			r.MappedEntities.DollarRelation = r.MappedEntities.DollarRelation[:len(resp.MappedEntities.DollarRelation)]
-		}
-		for dollarRelationCount2, dollarRelationItem2 := range resp.MappedEntities.DollarRelation {
-			var dollarRelation5 DollarRelation
-			dollarRelation5.Tags = nil
-			for _, v := range dollarRelationItem2.Tags {
-				dollarRelation5.Tags = append(dollarRelation5.Tags, types.StringValue(v))
-			}
-			dollarRelation5.EntityID = types.StringPointerValue(dollarRelationItem2.EntityID)
-			if dollarRelationCount2+1 > len(r.MappedEntities.DollarRelation) {
-				r.MappedEntities.DollarRelation = append(r.MappedEntities.DollarRelation, dollarRelation5)
+			additionalAddresses1.PostalCode = types.StringPointerValue(additionalAddressesItem.PostalCode)
+			additionalAddresses1.Street = types.StringPointerValue(additionalAddressesItem.Street)
+			additionalAddresses1.StreetNumber = types.StringPointerValue(additionalAddressesItem.StreetNumber)
+			if additionalAddressesCount+1 > len(r.AdditionalAddresses) {
+				r.AdditionalAddresses = append(r.AdditionalAddresses, additionalAddresses1)
 			} else {
-				r.MappedEntities.DollarRelation[dollarRelationCount2].Tags = dollarRelation5.Tags
-				r.MappedEntities.DollarRelation[dollarRelationCount2].EntityID = dollarRelation5.EntityID
+				r.AdditionalAddresses[additionalAddressesCount].ID = additionalAddresses1.ID
+				r.AdditionalAddresses[additionalAddressesCount].Tags = additionalAddresses1.Tags
+				r.AdditionalAddresses[additionalAddressesCount].AdditionalInfo = additionalAddresses1.AdditionalInfo
+				r.AdditionalAddresses[additionalAddressesCount].City = additionalAddresses1.City
+				r.AdditionalAddresses[additionalAddressesCount].Country = additionalAddresses1.Country
+				r.AdditionalAddresses[additionalAddressesCount].PostalCode = additionalAddresses1.PostalCode
+				r.AdditionalAddresses[additionalAddressesCount].Street = additionalAddresses1.Street
+				r.AdditionalAddresses[additionalAddressesCount].StreetNumber = additionalAddresses1.StreetNumber
 			}
 		}
-	}
-	r.OrderNumber = types.StringPointerValue(resp.OrderNumber)
-	if resp.Prices == nil {
-		r.Prices = nil
-	} else {
-		r.Prices = &BaseRelation{}
-		if len(r.Prices.DollarRelation) > len(resp.Prices.DollarRelation) {
-			r.Prices.DollarRelation = r.Prices.DollarRelation[:len(resp.Prices.DollarRelation)]
+		if len(r.BillingAddress) > len(resp.BillingAddress) {
+			r.BillingAddress = r.BillingAddress[:len(resp.BillingAddress)]
 		}
-		for dollarRelationCount3, dollarRelationItem3 := range resp.Prices.DollarRelation {
-			var dollarRelation7 DollarRelation
-			dollarRelation7.Tags = nil
-			for _, v := range dollarRelationItem3.Tags {
-				dollarRelation7.Tags = append(dollarRelation7.Tags, types.StringValue(v))
+		for billingAddressCount, billingAddressItem := range resp.BillingAddress {
+			var billingAddress1 tfTypes.BaseAddress
+			billingAddress1.ID = types.StringPointerValue(billingAddressItem.ID)
+			billingAddress1.Tags = []types.String{}
+			for _, v := range billingAddressItem.Tags {
+				billingAddress1.Tags = append(billingAddress1.Tags, types.StringValue(v))
 			}
-			dollarRelation7.EntityID = types.StringPointerValue(dollarRelationItem3.EntityID)
-			if dollarRelationCount3+1 > len(r.Prices.DollarRelation) {
-				r.Prices.DollarRelation = append(r.Prices.DollarRelation, dollarRelation7)
+			billingAddress1.AdditionalInfo = types.StringPointerValue(billingAddressItem.AdditionalInfo)
+			billingAddress1.City = types.StringPointerValue(billingAddressItem.City)
+			if billingAddressItem.Country != nil {
+				billingAddress1.Country = types.StringValue(string(*billingAddressItem.Country))
 			} else {
-				r.Prices.DollarRelation[dollarRelationCount3].Tags = dollarRelation7.Tags
-				r.Prices.DollarRelation[dollarRelationCount3].EntityID = dollarRelation7.EntityID
+				billingAddress1.Country = types.StringNull()
 			}
-		}
-	}
-	if resp.Products == nil {
-		r.Products = nil
-	} else {
-		r.Products = &BaseRelation{}
-		if len(r.Products.DollarRelation) > len(resp.Products.DollarRelation) {
-			r.Products.DollarRelation = r.Products.DollarRelation[:len(resp.Products.DollarRelation)]
-		}
-		for dollarRelationCount4, dollarRelationItem4 := range resp.Products.DollarRelation {
-			var dollarRelation9 DollarRelation
-			dollarRelation9.Tags = nil
-			for _, v := range dollarRelationItem4.Tags {
-				dollarRelation9.Tags = append(dollarRelation9.Tags, types.StringValue(v))
-			}
-			dollarRelation9.EntityID = types.StringPointerValue(dollarRelationItem4.EntityID)
-			if dollarRelationCount4+1 > len(r.Products.DollarRelation) {
-				r.Products.DollarRelation = append(r.Products.DollarRelation, dollarRelation9)
+			billingAddress1.PostalCode = types.StringPointerValue(billingAddressItem.PostalCode)
+			billingAddress1.Street = types.StringPointerValue(billingAddressItem.Street)
+			billingAddress1.StreetNumber = types.StringPointerValue(billingAddressItem.StreetNumber)
+			if billingAddressCount+1 > len(r.BillingAddress) {
+				r.BillingAddress = append(r.BillingAddress, billingAddress1)
 			} else {
-				r.Products.DollarRelation[dollarRelationCount4].Tags = dollarRelation9.Tags
-				r.Products.DollarRelation[dollarRelationCount4].EntityID = dollarRelation9.EntityID
+				r.BillingAddress[billingAddressCount].ID = billingAddress1.ID
+				r.BillingAddress[billingAddressCount].Tags = billingAddress1.Tags
+				r.BillingAddress[billingAddressCount].AdditionalInfo = billingAddress1.AdditionalInfo
+				r.BillingAddress[billingAddressCount].City = billingAddress1.City
+				r.BillingAddress[billingAddressCount].Country = billingAddress1.Country
+				r.BillingAddress[billingAddressCount].PostalCode = billingAddress1.PostalCode
+				r.BillingAddress[billingAddressCount].Street = billingAddress1.Street
+				r.BillingAddress[billingAddressCount].StreetNumber = billingAddress1.StreetNumber
 			}
 		}
-	}
-	if resp.Source == nil {
-		r.Source = nil
-	} else {
-		r.Source = &OrderCreateSource{}
-		r.Source.Href = types.StringPointerValue(resp.Source.Href)
-		r.Source.Title = types.StringPointerValue(resp.Source.Title)
-	}
-	r.SourceType = types.StringPointerValue(resp.SourceType)
-	if resp.Status != nil {
-		r.Status = types.StringValue(string(*resp.Status))
-	} else {
-		r.Status = types.StringNull()
-	}
-	if resp.TotalsDetail == nil {
-		r.TotalsDetail = nil
-	} else {
-		r.TotalsDetail = &OrderCreateTotalsDetail{}
-		if resp.TotalsDetail.AmountTax != nil {
-			r.TotalsDetail.AmountTax = types.NumberValue(big.NewFloat(float64(*resp.TotalsDetail.AmountTax)))
+		if resp.BillingContact == nil {
+			r.BillingContact = nil
 		} else {
-			r.TotalsDetail.AmountTax = types.NumberNull()
+			r.BillingContact = &tfTypes.BaseRelation{}
+			if len(r.BillingContact.DollarRelation) > len(resp.BillingContact.DollarRelation) {
+				r.BillingContact.DollarRelation = r.BillingContact.DollarRelation[:len(resp.BillingContact.DollarRelation)]
+			}
+			for dollarRelationCount, dollarRelationItem := range resp.BillingContact.DollarRelation {
+				var dollarRelation1 tfTypes.DollarRelation
+				dollarRelation1.Tags = []types.String{}
+				for _, v := range dollarRelationItem.Tags {
+					dollarRelation1.Tags = append(dollarRelation1.Tags, types.StringValue(v))
+				}
+				dollarRelation1.EntityID = types.StringPointerValue(dollarRelationItem.EntityID)
+				if dollarRelationCount+1 > len(r.BillingContact.DollarRelation) {
+					r.BillingContact.DollarRelation = append(r.BillingContact.DollarRelation, dollarRelation1)
+				} else {
+					r.BillingContact.DollarRelation[dollarRelationCount].Tags = dollarRelation1.Tags
+					r.BillingContact.DollarRelation[dollarRelationCount].EntityID = dollarRelation1.EntityID
+				}
+			}
 		}
-		if resp.TotalsDetail.Breakdown == nil {
-			r.TotalsDetail.Breakdown = nil
+		if resp.Customer == nil {
+			r.Customer = nil
 		} else {
-			r.TotalsDetail.Breakdown = &OrderCreateBreakdown{}
-			if len(r.TotalsDetail.Breakdown.Recurrences) > len(resp.TotalsDetail.Breakdown.Recurrences) {
-				r.TotalsDetail.Breakdown.Recurrences = r.TotalsDetail.Breakdown.Recurrences[:len(resp.TotalsDetail.Breakdown.Recurrences)]
+			r.Customer = &tfTypes.BaseRelation{}
+			if len(r.Customer.DollarRelation) > len(resp.Customer.DollarRelation) {
+				r.Customer.DollarRelation = r.Customer.DollarRelation[:len(resp.Customer.DollarRelation)]
 			}
-			for recurrencesCount, recurrencesItem := range resp.TotalsDetail.Breakdown.Recurrences {
-				var recurrences1 Recurrences
-				if recurrencesItem.AmountSubtotal != nil {
-					recurrences1.AmountSubtotal = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountSubtotal)))
-				} else {
-					recurrences1.AmountSubtotal = types.NumberNull()
+			for dollarRelationCount1, dollarRelationItem1 := range resp.Customer.DollarRelation {
+				var dollarRelation3 tfTypes.DollarRelation
+				dollarRelation3.Tags = []types.String{}
+				for _, v := range dollarRelationItem1.Tags {
+					dollarRelation3.Tags = append(dollarRelation3.Tags, types.StringValue(v))
 				}
-				recurrences1.AmountSubtotalDecimal = types.StringPointerValue(recurrencesItem.AmountSubtotalDecimal)
-				if recurrencesItem.AmountTax != nil {
-					recurrences1.AmountTax = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountTax)))
+				dollarRelation3.EntityID = types.StringPointerValue(dollarRelationItem1.EntityID)
+				if dollarRelationCount1+1 > len(r.Customer.DollarRelation) {
+					r.Customer.DollarRelation = append(r.Customer.DollarRelation, dollarRelation3)
 				} else {
-					recurrences1.AmountTax = types.NumberNull()
-				}
-				if recurrencesItem.AmountTotal != nil {
-					recurrences1.AmountTotal = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountTotal)))
-				} else {
-					recurrences1.AmountTotal = types.NumberNull()
-				}
-				recurrences1.AmountTotalDecimal = types.StringPointerValue(recurrencesItem.AmountTotalDecimal)
-				if recurrencesItem.Type != nil {
-					recurrences1.Type = types.StringValue(string(*recurrencesItem.Type))
-				} else {
-					recurrences1.Type = types.StringNull()
-				}
-				if recurrencesCount+1 > len(r.TotalsDetail.Breakdown.Recurrences) {
-					r.TotalsDetail.Breakdown.Recurrences = append(r.TotalsDetail.Breakdown.Recurrences, recurrences1)
-				} else {
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountSubtotal = recurrences1.AmountSubtotal
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountSubtotalDecimal = recurrences1.AmountSubtotalDecimal
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTax = recurrences1.AmountTax
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTotal = recurrences1.AmountTotal
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTotalDecimal = recurrences1.AmountTotalDecimal
-					r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].Type = recurrences1.Type
+					r.Customer.DollarRelation[dollarRelationCount1].Tags = dollarRelation3.Tags
+					r.Customer.DollarRelation[dollarRelationCount1].EntityID = dollarRelation3.EntityID
 				}
 			}
-			if len(r.TotalsDetail.Breakdown.Taxes) > len(resp.TotalsDetail.Breakdown.Taxes) {
-				r.TotalsDetail.Breakdown.Taxes = r.TotalsDetail.Breakdown.Taxes[:len(resp.TotalsDetail.Breakdown.Taxes)]
+		}
+		if len(r.DeliveryAddress) > len(resp.DeliveryAddress) {
+			r.DeliveryAddress = r.DeliveryAddress[:len(resp.DeliveryAddress)]
+		}
+		for deliveryAddressCount, deliveryAddressItem := range resp.DeliveryAddress {
+			var deliveryAddress1 tfTypes.BaseAddress
+			deliveryAddress1.ID = types.StringPointerValue(deliveryAddressItem.ID)
+			deliveryAddress1.Tags = []types.String{}
+			for _, v := range deliveryAddressItem.Tags {
+				deliveryAddress1.Tags = append(deliveryAddress1.Tags, types.StringValue(v))
 			}
-			for taxesCount, taxesItem := range resp.TotalsDetail.Breakdown.Taxes {
-				var taxes1 Taxes
-				if taxesItem.Amount != nil {
-					taxes1.Amount = types.NumberValue(big.NewFloat(float64(*taxesItem.Amount)))
-				} else {
-					taxes1.Amount = types.NumberNull()
+			deliveryAddress1.AdditionalInfo = types.StringPointerValue(deliveryAddressItem.AdditionalInfo)
+			deliveryAddress1.City = types.StringPointerValue(deliveryAddressItem.City)
+			if deliveryAddressItem.Country != nil {
+				deliveryAddress1.Country = types.StringValue(string(*deliveryAddressItem.Country))
+			} else {
+				deliveryAddress1.Country = types.StringNull()
+			}
+			deliveryAddress1.PostalCode = types.StringPointerValue(deliveryAddressItem.PostalCode)
+			deliveryAddress1.Street = types.StringPointerValue(deliveryAddressItem.Street)
+			deliveryAddress1.StreetNumber = types.StringPointerValue(deliveryAddressItem.StreetNumber)
+			if deliveryAddressCount+1 > len(r.DeliveryAddress) {
+				r.DeliveryAddress = append(r.DeliveryAddress, deliveryAddress1)
+			} else {
+				r.DeliveryAddress[deliveryAddressCount].ID = deliveryAddress1.ID
+				r.DeliveryAddress[deliveryAddressCount].Tags = deliveryAddress1.Tags
+				r.DeliveryAddress[deliveryAddressCount].AdditionalInfo = deliveryAddress1.AdditionalInfo
+				r.DeliveryAddress[deliveryAddressCount].City = deliveryAddress1.City
+				r.DeliveryAddress[deliveryAddressCount].Country = deliveryAddress1.Country
+				r.DeliveryAddress[deliveryAddressCount].PostalCode = deliveryAddress1.PostalCode
+				r.DeliveryAddress[deliveryAddressCount].Street = deliveryAddress1.Street
+				r.DeliveryAddress[deliveryAddressCount].StreetNumber = deliveryAddress1.StreetNumber
+			}
+		}
+		if resp.ExpiresAt != nil {
+			r.ExpiresAt = types.StringValue(resp.ExpiresAt.Format(time.RFC3339Nano))
+		} else {
+			r.ExpiresAt = types.StringNull()
+		}
+		r.ID = types.StringValue(resp.ID)
+		if resp.MappedEntities == nil {
+			r.MappedEntities = nil
+		} else {
+			r.MappedEntities = &tfTypes.BaseRelation{}
+			if len(r.MappedEntities.DollarRelation) > len(resp.MappedEntities.DollarRelation) {
+				r.MappedEntities.DollarRelation = r.MappedEntities.DollarRelation[:len(resp.MappedEntities.DollarRelation)]
+			}
+			for dollarRelationCount2, dollarRelationItem2 := range resp.MappedEntities.DollarRelation {
+				var dollarRelation5 tfTypes.DollarRelation
+				dollarRelation5.Tags = []types.String{}
+				for _, v := range dollarRelationItem2.Tags {
+					dollarRelation5.Tags = append(dollarRelation5.Tags, types.StringValue(v))
 				}
-				for taxCount, taxItem := range taxesItem.Tax {
-					var tax1 Tax
-					tax1.ID = types.StringPointerValue(taxItem.ID)
-					tax1.Rate = types.StringPointerValue(taxItem.Rate)
-					if taxItem.Type != nil {
-						tax1.Type = types.StringValue(string(*taxItem.Type))
+				dollarRelation5.EntityID = types.StringPointerValue(dollarRelationItem2.EntityID)
+				if dollarRelationCount2+1 > len(r.MappedEntities.DollarRelation) {
+					r.MappedEntities.DollarRelation = append(r.MappedEntities.DollarRelation, dollarRelation5)
+				} else {
+					r.MappedEntities.DollarRelation[dollarRelationCount2].Tags = dollarRelation5.Tags
+					r.MappedEntities.DollarRelation[dollarRelationCount2].EntityID = dollarRelation5.EntityID
+				}
+			}
+		}
+		r.OrderNumber = types.StringPointerValue(resp.OrderNumber)
+		if resp.Prices == nil {
+			r.Prices = nil
+		} else {
+			r.Prices = &tfTypes.BaseRelation{}
+			if len(r.Prices.DollarRelation) > len(resp.Prices.DollarRelation) {
+				r.Prices.DollarRelation = r.Prices.DollarRelation[:len(resp.Prices.DollarRelation)]
+			}
+			for dollarRelationCount3, dollarRelationItem3 := range resp.Prices.DollarRelation {
+				var dollarRelation7 tfTypes.DollarRelation
+				dollarRelation7.Tags = []types.String{}
+				for _, v := range dollarRelationItem3.Tags {
+					dollarRelation7.Tags = append(dollarRelation7.Tags, types.StringValue(v))
+				}
+				dollarRelation7.EntityID = types.StringPointerValue(dollarRelationItem3.EntityID)
+				if dollarRelationCount3+1 > len(r.Prices.DollarRelation) {
+					r.Prices.DollarRelation = append(r.Prices.DollarRelation, dollarRelation7)
+				} else {
+					r.Prices.DollarRelation[dollarRelationCount3].Tags = dollarRelation7.Tags
+					r.Prices.DollarRelation[dollarRelationCount3].EntityID = dollarRelation7.EntityID
+				}
+			}
+		}
+		if resp.Products == nil {
+			r.Products = nil
+		} else {
+			r.Products = &tfTypes.BaseRelation{}
+			if len(r.Products.DollarRelation) > len(resp.Products.DollarRelation) {
+				r.Products.DollarRelation = r.Products.DollarRelation[:len(resp.Products.DollarRelation)]
+			}
+			for dollarRelationCount4, dollarRelationItem4 := range resp.Products.DollarRelation {
+				var dollarRelation9 tfTypes.DollarRelation
+				dollarRelation9.Tags = []types.String{}
+				for _, v := range dollarRelationItem4.Tags {
+					dollarRelation9.Tags = append(dollarRelation9.Tags, types.StringValue(v))
+				}
+				dollarRelation9.EntityID = types.StringPointerValue(dollarRelationItem4.EntityID)
+				if dollarRelationCount4+1 > len(r.Products.DollarRelation) {
+					r.Products.DollarRelation = append(r.Products.DollarRelation, dollarRelation9)
+				} else {
+					r.Products.DollarRelation[dollarRelationCount4].Tags = dollarRelation9.Tags
+					r.Products.DollarRelation[dollarRelationCount4].EntityID = dollarRelation9.EntityID
+				}
+			}
+		}
+		if resp.Source == nil {
+			r.Source = nil
+		} else {
+			r.Source = &tfTypes.OrderCreateSource{}
+			r.Source.Href = types.StringPointerValue(resp.Source.Href)
+			r.Source.Title = types.StringPointerValue(resp.Source.Title)
+		}
+		r.SourceType = types.StringPointerValue(resp.SourceType)
+		if resp.Status != nil {
+			r.Status = types.StringValue(string(*resp.Status))
+		} else {
+			r.Status = types.StringNull()
+		}
+		if resp.TotalsDetail == nil {
+			r.TotalsDetail = nil
+		} else {
+			r.TotalsDetail = &tfTypes.OrderCreateTotalsDetail{}
+			if resp.TotalsDetail.AmountTax != nil {
+				r.TotalsDetail.AmountTax = types.NumberValue(big.NewFloat(float64(*resp.TotalsDetail.AmountTax)))
+			} else {
+				r.TotalsDetail.AmountTax = types.NumberNull()
+			}
+			if resp.TotalsDetail.Breakdown == nil {
+				r.TotalsDetail.Breakdown = nil
+			} else {
+				r.TotalsDetail.Breakdown = &tfTypes.OrderCreateBreakdown{}
+				if len(r.TotalsDetail.Breakdown.Recurrences) > len(resp.TotalsDetail.Breakdown.Recurrences) {
+					r.TotalsDetail.Breakdown.Recurrences = r.TotalsDetail.Breakdown.Recurrences[:len(resp.TotalsDetail.Breakdown.Recurrences)]
+				}
+				for recurrencesCount, recurrencesItem := range resp.TotalsDetail.Breakdown.Recurrences {
+					var recurrences1 tfTypes.Recurrences
+					if recurrencesItem.AmountSubtotal != nil {
+						recurrences1.AmountSubtotal = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountSubtotal)))
 					} else {
-						tax1.Type = types.StringNull()
+						recurrences1.AmountSubtotal = types.NumberNull()
 					}
-					if taxCount+1 > len(taxes1.Tax) {
-						taxes1.Tax = append(taxes1.Tax, tax1)
+					recurrences1.AmountSubtotalDecimal = types.StringPointerValue(recurrencesItem.AmountSubtotalDecimal)
+					if recurrencesItem.AmountTax != nil {
+						recurrences1.AmountTax = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountTax)))
 					} else {
-						taxes1.Tax[taxCount].ID = tax1.ID
-						taxes1.Tax[taxCount].Rate = tax1.Rate
-						taxes1.Tax[taxCount].Type = tax1.Type
+						recurrences1.AmountTax = types.NumberNull()
+					}
+					if recurrencesItem.AmountTotal != nil {
+						recurrences1.AmountTotal = types.NumberValue(big.NewFloat(float64(*recurrencesItem.AmountTotal)))
+					} else {
+						recurrences1.AmountTotal = types.NumberNull()
+					}
+					recurrences1.AmountTotalDecimal = types.StringPointerValue(recurrencesItem.AmountTotalDecimal)
+					if recurrencesItem.Type != nil {
+						recurrences1.Type = types.StringValue(string(*recurrencesItem.Type))
+					} else {
+						recurrences1.Type = types.StringNull()
+					}
+					if recurrencesCount+1 > len(r.TotalsDetail.Breakdown.Recurrences) {
+						r.TotalsDetail.Breakdown.Recurrences = append(r.TotalsDetail.Breakdown.Recurrences, recurrences1)
+					} else {
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountSubtotal = recurrences1.AmountSubtotal
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountSubtotalDecimal = recurrences1.AmountSubtotalDecimal
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTax = recurrences1.AmountTax
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTotal = recurrences1.AmountTotal
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].AmountTotalDecimal = recurrences1.AmountTotalDecimal
+						r.TotalsDetail.Breakdown.Recurrences[recurrencesCount].Type = recurrences1.Type
 					}
 				}
-				if taxesCount+1 > len(r.TotalsDetail.Breakdown.Taxes) {
-					r.TotalsDetail.Breakdown.Taxes = append(r.TotalsDetail.Breakdown.Taxes, taxes1)
-				} else {
-					r.TotalsDetail.Breakdown.Taxes[taxesCount].Amount = taxes1.Amount
-					r.TotalsDetail.Breakdown.Taxes[taxesCount].Tax = taxes1.Tax
+				if len(r.TotalsDetail.Breakdown.Taxes) > len(resp.TotalsDetail.Breakdown.Taxes) {
+					r.TotalsDetail.Breakdown.Taxes = r.TotalsDetail.Breakdown.Taxes[:len(resp.TotalsDetail.Breakdown.Taxes)]
+				}
+				for taxesCount, taxesItem := range resp.TotalsDetail.Breakdown.Taxes {
+					var taxes1 tfTypes.Taxes
+					if taxesItem.Amount != nil {
+						taxes1.Amount = types.NumberValue(big.NewFloat(float64(*taxesItem.Amount)))
+					} else {
+						taxes1.Amount = types.NumberNull()
+					}
+					for taxCount, taxItem := range taxesItem.Tax {
+						var tax1 tfTypes.Tax
+						tax1.ID = types.StringPointerValue(taxItem.ID)
+						tax1.Rate = types.StringPointerValue(taxItem.Rate)
+						if taxItem.Type != nil {
+							tax1.Type = types.StringValue(string(*taxItem.Type))
+						} else {
+							tax1.Type = types.StringNull()
+						}
+						if taxCount+1 > len(taxes1.Tax) {
+							taxes1.Tax = append(taxes1.Tax, tax1)
+						} else {
+							taxes1.Tax[taxCount].ID = tax1.ID
+							taxes1.Tax[taxCount].Rate = tax1.Rate
+							taxes1.Tax[taxCount].Type = tax1.Type
+						}
+					}
+					if taxesCount+1 > len(r.TotalsDetail.Breakdown.Taxes) {
+						r.TotalsDetail.Breakdown.Taxes = append(r.TotalsDetail.Breakdown.Taxes, taxes1)
+					} else {
+						r.TotalsDetail.Breakdown.Taxes[taxesCount].Amount = taxes1.Amount
+						r.TotalsDetail.Breakdown.Taxes[taxesCount].Tax = taxes1.Tax
+					}
 				}
 			}
 		}
